@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++17 -pthread -g -ggdb -g   CMakeFiles/LogTest.dir/LogTest.cpp.o  -o ../LogTest  ../liblogger.a 

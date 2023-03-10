@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/zcy/Cpp/MyWebServer/1.1/logger/FileUtil.h
+string
+-
+noncopyable.h
+/home/zcy/Cpp/MyWebServer/1.1/logger/noncopyable.h
+
+/home/zcy/Cpp/MyWebServer/1.1/logger/LogFile.cpp
+LogFile.h
+/home/zcy/Cpp/MyWebServer/1.1/logger/LogFile.h
+assert.h
+-
+stdio.h
+-
+time.h
+-
+FileUtil.h
+/home/zcy/Cpp/MyWebServer/1.1/logger/FileUtil.h
+
+/home/zcy/Cpp/MyWebServer/1.1/logger/LogFile.h
+memory
+-
+string
+-
+FileUtil.h
+/home/zcy/Cpp/MyWebServer/1.1/logger/FileUtil.h
+mutex
+-
+noncopyable.h
+/home/zcy/Cpp/MyWebServer/1.1/logger/noncopyable.h
+
+/home/zcy/Cpp/MyWebServer/1.1/logger/noncopyable.h
+
