@@ -94,6 +94,9 @@ int Socket::GetFd(){
     return fd_;
 }
 
+void Socket::shutdownWrite(){
+     ErrorIf(shutdown(fd_, SHUT_WR) == -1, "socket accept error");
+}
 
 InetAddress::InetAddress(){
     bzero(&addr_, sizeof(addr_));
@@ -117,3 +120,4 @@ char* InetAddress::GetIp(){
 uint16_t InetAddress::GetPort(){
     return ntohs(addr_.sin_port);
 }
+

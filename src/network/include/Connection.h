@@ -44,6 +44,7 @@ class Connection{
       return context_;
      }
      void deleteConnection();
+     void shutdown();
 
     private:
      std::unique_ptr<Socket> sock_;

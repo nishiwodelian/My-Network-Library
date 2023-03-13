@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/network/include/Connection.h
+functional
+-
+memory
+-
+
+../src/network/include/Socket.h
+arpa/inet.h
+-
+
+/home/zcy/Cpp/My-Network-Library/example/client.cpp
+Connection.h
+-
+Socket.h
+-
+iostream
+-
+

@@ -178,3 +178,7 @@ void Connection::deleteConnection(){
     channel_->Delete();
     state_ = State::Closed;
 }
+
+void Connection::shutdown(){
+    sock_->shutdownWrite();
+}

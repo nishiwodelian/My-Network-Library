@@ -18,6 +18,12 @@ class ParseWorker{
         context_.resize(str.size());
         context_.assign(str.begin(), str.end());
      }
+     
+     std::string Getstr(){
+      std::string str(context_.data(), context_.size());
+      return str;
+     }
+
      const char* findCRLF() const
      {
         const char* crlf = std::search(peek(), end(), CRLF, CRLF+2);

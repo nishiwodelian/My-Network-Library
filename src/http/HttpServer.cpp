@@ -28,7 +28,7 @@ void HttpServer::Start(){
 void HttpServer::onConnection(Connection *conn){
     if (conn->Connected)
     {
-        LOG_INFO << "new Connection arrived";
+        //LOG_INFO << "new Connection arrived";
     }
     else 
     {
@@ -41,9 +41,13 @@ void HttpServer::onMessage(Connection *conn){
     std::string str = conn->ReadBuffer();
     worker_.SetStr(str);
     if(!context->parseRequest(&worker_)){
-        LOG_INFO << "parseRequest failed!";
-        conn->Send("HTTP/1.1 400 Bad Request\r\n\r\n");
-        //conn->shutdown();
+        LOG_INFO << "parseRequest failed!  str:  " << str;
+        //LOG_INFO << worker_.Getstr();
+        
+        //conn->Send("HTTP/1.1 400 Bad Request\r\n\r\n");
+         LOG_INFO << "success send 400 !";
+        conn->shutdown();
+        conn->deleteConnection();//神奇神奇
         //注意要清理这个conn
     }
     if(context->gotAll()){
@@ -71,7 +75,8 @@ void HttpServer::onRequest(Connection *conn, const HttpRequest& req){
     conn->Send(buf.ToStr());
     if (response.closeConnection())
     {
-        //conn->shutdown();
+        conn->shutdown();
+        conn->deleteConnection();//神奇神奇
         //注意要清理这个conn
     }
 

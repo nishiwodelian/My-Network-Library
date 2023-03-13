@@ -11,6 +11,7 @@ class InetAddress{
      sockaddr_in GetAddr();
      char* GetIp();
      uint16_t GetPort();
+
     private:
      struct sockaddr_in addr_;  //IPv4专用socket地址结构体
 };
@@ -30,6 +31,7 @@ class Socket{
      int SetNonBlocking();
      bool IsNonBlocking();
      int GetFd();
+     void shutdownWrite();
     private:
      int fd_{-1};
 };

@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++17 -pthread   CMakeFiles/TimerServer.dir/timer_server.cpp.o  -o ../../example/TimerServer  -Wl,-rpath,/home/zcy/Cpp/My-Network-Library/build/src/network:/home/zcy/Cpp/My-Network-Library/build/src/logger ../src/network/libnetwork.so ../src/logger/liblogger.so 

@@ -7,6 +7,7 @@
 #include "Connection.h"
 #include "EventLoop.h"
 #include "Socket.h"
+#include "Logging.h"
 
 extern char favicon[555];
 bool benchmark = false;

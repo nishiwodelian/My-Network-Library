@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++17 -pthread   CMakeFiles/Client.dir/client.cpp.o  -o ../../example/Client  -Wl,-rpath,/home/zcy/Cpp/My-Network-Library/build/src/network ../src/network/libnetwork.so 
