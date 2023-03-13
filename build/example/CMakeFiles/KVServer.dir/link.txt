@@ -1,1 +1,0 @@
-/usr/bin/c++   -std=c++17 -pthread   CMakeFiles/KVServer.dir/kv_server.cpp.o  -o ../../example/KVServer  -Wl,-rpath,/home/zcy/Cpp/My-Network-Library/build/src/storage:/home/zcy/Cpp/My-Network-Library/build/src/network ../src/storage/libstorage.so ../src/network/libnetwork.so 

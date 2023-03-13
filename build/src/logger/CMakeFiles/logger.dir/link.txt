@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC  -std=c++17 -pthread  -shared -Wl,-soname,liblogger.so -o liblogger.so CMakeFiles/logger.dir/AsyncLogging.cpp.o CMakeFiles/logger.dir/CurrentThread.cpp.o CMakeFiles/logger.dir/FileUtil.cpp.o CMakeFiles/logger.dir/LogFile.cpp.o CMakeFiles/logger.dir/Logging.cpp.o CMakeFiles/logger.dir/LogStream.cpp.o CMakeFiles/logger.dir/Thread.cpp.o 

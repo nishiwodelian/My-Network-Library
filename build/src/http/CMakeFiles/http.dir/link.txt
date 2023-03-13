@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC  -std=c++17 -pthread  -shared -Wl,-soname,libhttp.so -o libhttp.so CMakeFiles/http.dir/HttpContext.cpp.o CMakeFiles/http.dir/HttpResponse.cpp.o CMakeFiles/http.dir/HttpServer.cpp.o CMakeFiles/http.dir/__/network/Buffer.cpp.o CMakeFiles/http.dir/__/logger/Logging.cpp.o CMakeFiles/http.dir/__/logger/LogStream.cpp.o 
