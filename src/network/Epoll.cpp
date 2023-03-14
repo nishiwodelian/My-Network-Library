@@ -3,6 +3,7 @@
 #include "Channel.h"
 #include <unistd.h>
 #include <string.h>
+#include "Logging.h"
 
 #define MAX_EVENTS 1000
 
@@ -24,6 +25,7 @@ std::vector<Channel*> Epoll::Poll(int timeout){
     std::vector<Channel*> activeChannels;
     int nfds = epoll_wait(epfd_, events_, MAX_EVENTS,timeout);//epoll_wait如果检测到事件，将所有就绪事件从内核事件表拷贝到events_指向的数组中
     ErrorIf(nfds == -1, "epoll wait error"); //返回的nfds是就绪文件描述符的个数
+    
     for(int i = 0; i< nfds;++i){
         Channel *ch = (Channel*)events_[i].data.ptr; //指针指向某个文件描述符对应的channel
         ch->SetReadyEvents(events_[i].events); //uint32_t格式的，表示epoll事件
@@ -47,7 +49,11 @@ void Epoll::UpdateChannel(Channel *ch){
 }
 
 void Epoll::DeleteChannel(Channel *ch){
+   
+    //LOG_ERROR << "before getfd";
     int fd = ch->GetFd();
+    //LOG_ERROR << "before epoll_ctl";
     ErrorIf(epoll_ctl(epfd_, EPOLL_CTL_DEL, fd, NULL) == -1, "epoll delete error");//删除fd上的注册事件
+    //LOG_ERROR << "before set in epoll";
     ch->SetInEpoll(false); //修改channel在不在epoll事件表的标识
 }

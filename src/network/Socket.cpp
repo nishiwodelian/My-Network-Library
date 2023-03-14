@@ -57,7 +57,7 @@ int Socket::Accept(InetAddress *_addr){
         }
     }
     else{
-        printf("waiting connect...\n");
+        //printf("waiting connect...\n");
         clnt_sockfd = ::accept(fd_, (sockaddr*)&addr, &addr_len);
         ErrorIf(clnt_sockfd == -1, "socket accept error");
     }
@@ -95,7 +95,9 @@ int Socket::GetFd(){
 }
 
 void Socket::shutdownWrite(){
+    //close(fd_);
      ErrorIf(shutdown(fd_, SHUT_WR) == -1, "socket accept error");
+     //ErrorIf(shutdown(fd_, SHUT_RD) == -1, "socket accept error");
 }
 
 InetAddress::InetAddress(){

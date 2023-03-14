@@ -14,7 +14,7 @@ bool benchmark = false;
 
 void onRequest(const HttpRequest& req, HttpResponse* resp)
 {
-    std::cout << "Headers " << req.methodString() << " " << req.path() << std::endl;
+  //  std::cout << "Headers " << req.methodString() << " " << req.path() << std::endl;
     
     // 打印头部
     if (!benchmark)
@@ -22,7 +22,7 @@ void onRequest(const HttpRequest& req, HttpResponse* resp)
         const std::unordered_map<std::string, std::string>& headers = req.headers();
         for (const auto& header : headers)
         {
-            std::cout << header.first << ": " << header.second << std::endl;
+     //       std::cout << header.first << ": " << header.second << std::endl;
         }
     }
 

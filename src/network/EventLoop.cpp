@@ -2,6 +2,7 @@
 #include "Epoll.h"
 #include "Channel.h"
 #include <vector>
+#include "Logging.h"
 
 
 EventLoop::EventLoop() : quit_(false)
@@ -25,9 +26,16 @@ void EventLoop::Loop(){
 }
 
 void EventLoop::UpdateChannel(Channel *ch){
+    //LOG_ERROR << "before epoll update";
     epoll_->UpdateChannel(ch);
 }
 void EventLoop::RemoveChannel(Channel *ch){
+    /*if(epoll_!= nullptr) 
+        LOG_ERROR<< "ptr success";
+    else
+        LOG_ERROR<< "ptr lose";
+    //LOG_ERROR<< epoll_->test();
+    LOG_ERROR << "before epoll remove";*/
     epoll_->DeleteChannel(ch);
 }
 

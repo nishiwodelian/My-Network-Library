@@ -3,6 +3,7 @@
 #include "Socket.h"
 #include <unistd.h>
 #include <sys/epoll.h>
+#include "Logging.h"
 
 Channel::Channel(EventLoop *_loop, int _fd)
  : loop_(_loop), fd_(_fd), listen_events_(0), ready_events_(0),in_epoll_(false){}
@@ -14,7 +15,23 @@ Channel::~Channel(){
     }
 }
 
+void Channel::disableAll() {
+      listen_events_ &= 0;
+//      LOG_ERROR << "before update channel";
+      loop_->UpdateChannel(this);
+}
+bool Channel::isWriting(){ return listen_events_ & EPOLLOUT; }
+
+
 void Channel::HandleEvent(){
+    if ((ready_events_ & EPOLLHUP) && !(ready_events_ & EPOLLIN))
+    {
+        // 确认是否拥有回调函数
+        if (close_callback_)
+        {
+            close_callback_();
+        }
+    }
     if(ready_events_ & (EPOLLIN | EPOLLPRI)) { //EPOLLIN数据可读，EPOLLPRI高优先级数据可读，包括TCP带外数据
         read_callback_();
     }
@@ -52,7 +69,11 @@ void Channel::SetReadyEvents(uint32_t _ev){
 void Channel::SetReadCallback(std::function<void()> _cb){
     read_callback_ = _cb;
 }
+void Channel::SetCloseCallback(std::function<void()> _cb){
+    close_callback_ = _cb;
+}
 
 void Channel::Delete(){
+    //LOG_ERROR << "before loop remove";
     loop_->RemoveChannel(this);
 }

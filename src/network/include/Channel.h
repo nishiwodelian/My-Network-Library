@@ -17,9 +17,12 @@ class Channel
      bool GetInEpoll();
      void SetInEpoll(bool _in = true);
      void UseET();
+     void disableAll(); 
+      bool isWriting();
 
      void SetReadyEvents(uint32_t);
      void SetReadCallback(std::function<void()>);
+     void SetCloseCallback(std::function<void()>);
      void Delete();
 
     private:
@@ -30,4 +33,5 @@ class Channel
      bool in_epoll_;
      std::function<void()> read_callback_;
      std::function<void()> write_callback_;
+     std::function<void()> close_callback_;
 };

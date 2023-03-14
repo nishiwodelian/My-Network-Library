@@ -54,7 +54,9 @@ void Server::NewConnection(int fd){
 void Server::DeleteConnection(int fd){
     auto it = connections_.find(fd);
     if(it != connections_.end()){
-        connections_.erase(fd);
+        Connection* con = connections_[fd].get();
+        //connections_.erase(fd);
+        con->deleteConnection();
     }
 }
 

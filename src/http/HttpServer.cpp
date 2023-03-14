@@ -37,25 +37,29 @@ void HttpServer::onConnection(Connection *conn){
 }
 
 void HttpServer::onMessage(Connection *conn){
+    if(!conn->isConnected()){
+//         LOG_INFO << "disconnected! :  ";
+         return;
+    }
     std::unique_ptr<HttpContext> context(new HttpContext);
     std::string str = conn->ReadBuffer();
     worker_.SetStr(str);
     if(!context->parseRequest(&worker_)){
-        LOG_INFO << "parseRequest failed!  str:  " << str;
+//        LOG_INFO << "parseRequest failed!  str:  " << str;
         //LOG_INFO << worker_.Getstr();
         
-        //conn->Send("HTTP/1.1 400 Bad Request\r\n\r\n");
-         LOG_INFO << "success send 400 !";
+        conn->Send("HTTP/1.1 400 Bad Request\r\n\r\n");
+    //     LOG_INFO << "success send 400 !";
         conn->shutdown();
-        conn->deleteConnection();//神奇神奇
+        //conn->deleteConnection();//神奇神奇
+        //conn->Close();
         //注意要清理这个conn
     }
     if(context->gotAll()){
-        LOG_INFO << "parseRequest success!";
+        //LOG_INFO << "parseRequest success!";
         onRequest(conn, context->request());
         context->reset();
     }
-
 }
 
 void HttpServer::onRequest(Connection *conn, const HttpRequest& req){
@@ -76,7 +80,8 @@ void HttpServer::onRequest(Connection *conn, const HttpRequest& req){
     if (response.closeConnection())
     {
         conn->shutdown();
-        conn->deleteConnection();//神奇神奇
+        //conn->deleteConnection();//神奇神奇
+        //conn->Close();
         //注意要清理这个conn
     }
 

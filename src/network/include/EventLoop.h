@@ -4,6 +4,7 @@
 #include "TimerQueue.h"
 
 
+
 class Epoll;
 class Channel;
 class EventLoop{
@@ -37,5 +38,6 @@ class EventLoop{
     private:
      std::unique_ptr<Epoll> epoll_;
      std::unique_ptr<TimerQueue> timerQueue_;
+
      bool quit_{false};
 };

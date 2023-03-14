@@ -8,6 +8,7 @@
 #include "Channel.h"
 #include "Socket.h"
 #include "util.h"
+#include "Logging.h"
 #define ASSERT(expr, message) assert((expr) && (message))
 
 Connection::Connection(int fd, EventLoop *loop):context_(0){
@@ -15,6 +16,7 @@ Connection::Connection(int fd, EventLoop *loop):context_(0){
     sock_->set_fd(fd);
     if(loop != nullptr){
         channel_ = std::make_unique<Channel>(loop, fd);
+        channel_->SetCloseCallback(std::bind(&Connection::Close, this));
         channel_->EnableRead();
         channel_->UseET();
     }
@@ -26,7 +28,8 @@ Connection::Connection(int fd, EventLoop *loop):context_(0){
 Connection::~Connection(){}
 
 void Connection::Read(){
-    assert(state_ == State::Connected);
+     if(state_ != State::Connected)return;
+    //assert(state_ == State::Connected);
     read_buffer_->Clear();
     if(sock_->IsNonBlocking()){
         ReadNonBlocking();
@@ -36,7 +39,8 @@ void Connection::Read(){
 }
 
 void Connection::Write() {
-    assert(state_ == State::Connected);
+    //assert(state_ == State::Connected);
+    if(state_ != State::Connected)return;
     if(sock_->IsNonBlocking()){
         WriteNonBlocking();
     }else{
@@ -59,12 +63,16 @@ void Connection::ReadNonBlocking(){
         } else if(bytes_read == -1 && ((errno==EAGAIN) || (errno == EWOULDBLOCK))){ // 非阻塞IO，这个条件表示数据全部读取完毕
             break;
         } else if(bytes_read == 0) {//EOF，客户端断开连接
-            printf("read EOF, client fd %d disconnected\n", sockfd);
+            //printf("read EOF, client fd %d disconnected\n", sockfd);
+ //           LOG_ERROR << "read EOF, client fd" << sockfd ;
             state_ = State::Closed;
+            Close();
+//            LOG_ERROR << "success close" << sockfd ;
             break;
         } else{
             printf("Other error on client fd %d\n", sockfd);
             state_ = State::Closed;
+            Close();
             break;
         }
     }
@@ -104,7 +112,8 @@ void Connection::ReadBlocking() {
     if(bytes_read > 0){
         read_buffer_->Append(buf, bytes_read);
     }else if(bytes_read==0){
-        printf("read EOF, blocking client fd %d disconnected\n", sockfd);
+        //printf("read EOF, blocking client fd %d disconnected\n", sockfd);
+        LOG_ERROR << "read EOF, client fd" << sockfd ;
         state_ = State::Closed;
     }else if(bytes_read == -1){
         printf("Other error on blocking client fd %d\n", sockfd);
@@ -132,7 +141,10 @@ void Connection::Business(){
 }
 
 void Connection::Close(){
+    state_ = State::Closed;
+    //channel_->disableAll();
     delete_connection_callback_(sock_->GetFd());
+
 }
 Connection::State Connection::GetState(){
     return state_;
@@ -175,10 +187,15 @@ Socket *Connection::GetSocket() {
 }
 
 void Connection::deleteConnection(){
-    channel_->Delete();
     state_ = State::Closed;
+         //LOG_ERROR << "before disableAll" ;
+    channel_->disableAll();
+         //LOG_ERROR << "before delete channel" ;
+    channel_->Delete();
 }
 
 void Connection::shutdown(){
-    sock_->shutdownWrite();
+    if(!channel_->isWriting()){
+        sock_->shutdownWrite();
+    }
 }

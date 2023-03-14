@@ -16,7 +16,7 @@ class Connection{
      };
      Connection(int fd, EventLoop *loop);
      ~Connection();
-
+     bool isConnected() {return state_ == State::Connected;}
      void Read();
      void Write();
      void Send(std::string msg); //直接向客户端发送字符串

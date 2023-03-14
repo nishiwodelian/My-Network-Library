@@ -10,7 +10,7 @@ add_executable(KVServer kv_server.cpp)
 target_link_libraries(KVServer storage)
 target_link_libraries(KVServer network)
 
-add_executable(HTTPServer http_server.cpp)
+add_executable(HTTPServer http_server.cpp ../src/network/EventLoop.cpp)
 target_link_libraries(HTTPServer network)
 target_link_libraries(HTTPServer logger)
 target_link_libraries(HTTPServer http)
